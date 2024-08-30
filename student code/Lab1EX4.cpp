@@ -1,3 +1,5 @@
+//Group ## Nathan Fant and Brandon Collings
+
 // g++ -std=c++11 -o Lab1EX4 Lab1EX4.cpp -lwiringPi
 
 #include <wiringPi.h>

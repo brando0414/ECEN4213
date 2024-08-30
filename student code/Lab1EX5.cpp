@@ -1,3 +1,5 @@
+//Group ## Nathan Fant and Brandon Collings
+
 // g++ -std=c++11 -o Lab1EX5 Lab1EX5.cpp -lwiringPi
 
 #include <wiringPi.h>
@@ -78,6 +80,9 @@ int adcVal(){
 	// any input pin (A0, A1, A2, A3) you like.
 	adc = wiringPiI2CSetup(/*Address of ADS1015(HEX)*/);
 	wiringPiI2CWriteReg16(adc, /*Configuration Register address pointer(HEX)*/, /*Configuration Register*/);
+    /*adc = wiringPiI2CSetup(0x48); // 0b0100_1000
+	wiringPiI2CWriteReg16(adc, 0x01, 0xC583); // 0b0000_0001, 0b1100_0101_1000_0011
+    wiringPiI2CWriteReg16(adc, 0x01, 0xC5C1); //0b0000_0001, 0b1100_0101_1100_0001*/
 	usleep(1000);
     uint16_t data = wiringPiI2CReadReg16(adc, /*Conversion Register address pointer(HEX)*/);
 
