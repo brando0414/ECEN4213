@@ -13,12 +13,34 @@
 void moveOnePeriod(int dir){
     if(dir == 1){
         /* clockwise, there are four steps in one period, set a delay after each step*/
-        
-        
+        digitalWrite(GPIO25, 1);
+        delay(500);
+        digitalWrite(GPIO25,0);
+        digitalWrite(GPIO23,1);
+        delay(500);
+        digitalWrite(GPIO23,0);
+        digitalWrite(GPIO24,1);
+        delay(500);
+        digitalWrite(GPIO24,0);
+        digitalWrite(GPIO18,1);
+        delay(500);
+        digitalWrite(GPIO18,0);
+
     }
     else{
         /* anticlockwise, there are four steps in one period, set a delay after each step*/
-        
+        digitalWrite(GPIO18, 1);
+        delay(500);
+        digitalWrite(GPIO18,0);
+        digitalWrite(GPIO24,1);
+        delay(500);
+        digitalWrite(GPIO24,0);
+        digitalWrite(GPIO23,1);
+        delay(500);
+        digitalWrite(GPIO23,0);
+        digitalWrite(GPIO25,1);
+        delay(500);
+        digitalWrite(GPIO25,0);
     }
 }
 //continuous rotation function, the parameter steps specifies the rotation cycles, every four steps is a cycle
@@ -40,11 +62,12 @@ int main(void){
     while(1){
         /*rotating 360° clockwise, a total of 2048 steps in one full revolution, namely, 512 cycles.
         use function moveCycles(int dir,int cycles)*/
-        moveCycles(1, 512)
+        moveCycles(1, 512);
         delay(500);
 
         /*rotating 360° anticlockwise, a total of 2048 steps in one full revolution, namely, 512 cycles.
         use function moveCycles(int dir,int cycles)*/
+        moveCycles(0, 512);
         delay(500);
     }
     return 0;

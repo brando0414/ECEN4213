@@ -22,7 +22,7 @@
 using namespace std;
 
 /* signal pin of the servo*/
-#define servoPin    
+#define servoPin = GPIO18   
 
 //Specific a certain rotation angle (0-180) for the servo
 void servoWrite(int pin, int angle){ 

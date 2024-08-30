@@ -10,7 +10,7 @@
 #define SERVO_MAX_ANGLE 180
 
 /* signal pin of the servo*/
-#define servoPin    
+#define servoPin = GPIO18   
 
 //Specific a certain rotation angle (0-180) for the servo
 void servoWrite(int pin, int angle){ 
@@ -28,11 +28,15 @@ int main(void)
 
         /*make servo rotate from minimum angle to maximum, use the function 
         servoWrite(int pin, int angle), increase 1 degree each time*/
+        servoWrite(servoPin, 0);
         delay(500);
+        servoWrite(servoPin, 180);
 
         /*make servo rotate from maximum angle to minimum, use the function 
         servoWrite(int pin, int angle), increase 1 degree each time*/
+        servoWrite(servoPin, 180);
         delay(500);
+        servoWrite(servoPin, 0);
     }
     return 0;
 }
