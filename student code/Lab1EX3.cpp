@@ -15,34 +15,50 @@
 void moveOnePeriod(int dir){
     if(dir == 1){
         /* clockwise, there are four steps in one period, set a delay after each step*/
-        digitalWrite(GPIO25, 1);
-        delay(500);
-        digitalWrite(GPIO25,0);
-        digitalWrite(GPIO23,1);
-        delay(500);
-        digitalWrite(GPIO23,0);
-        digitalWrite(GPIO24,1);
-        delay(500);
-        digitalWrite(GPIO24,0);
-        digitalWrite(GPIO18,1);
-        delay(500);
-        digitalWrite(GPIO18,0);
+        digitalWrite(6,1);
+        digitalWrite(4,0);
+        digitalWrite(5,0);
+        digitalWrite(1,0);
+        delay(3);
+        digitalWrite(6,0);
+        digitalWrite(4,1);
+        digitalWrite(5,0);
+        digitalWrite(1,0);
+        delay(3);
+        digitalWrite(6,0);
+        digitalWrite(4,0);
+        digitalWrite(5,1);
+        digitalWrite(1,0);
+        delay(3);
+        digitalWrite(6,0);
+        digitalWrite(4,0);
+        digitalWrite(5,0);
+        digitalWrite(1,1);
+        delay(3);
 
     }
     else{
         /* anticlockwise, there are four steps in one period, set a delay after each step*/
-        digitalWrite(GPIO18, 1);
-        delay(500);
-        digitalWrite(GPIO18,0);
-        digitalWrite(GPIO24,1);
-        delay(500);
-        digitalWrite(GPIO24,0);
-        digitalWrite(GPIO23,1);
-        delay(500);
-        digitalWrite(GPIO23,0);
-        digitalWrite(GPIO25,1);
-        delay(500);
-        digitalWrite(GPIO25,0);
+        digitalWrite(6,0);
+        digitalWrite(4,0);
+        digitalWrite(5,0);
+        digitalWrite(1,1);
+        delay(3);
+        digitalWrite(6,0);
+        digitalWrite(4,0);
+        digitalWrite(5,1);
+        digitalWrite(1,0);
+        delay(3);
+        digitalWrite(6,0);
+        digitalWrite(4,1);
+        digitalWrite(5,0);
+        digitalWrite(1,0);
+        delay(3);
+        digitalWrite(6,1);
+        digitalWrite(4,0);
+        digitalWrite(5,0);
+        digitalWrite(1,0);
+        delay(3);
     }
 }
 //continuous rotation function, the parameter steps specifies the rotation cycles, every four steps is a cycle
@@ -56,10 +72,10 @@ void moveCycles(int dir,int cycles){
 int main(void){
     wiringPiSetup();
     /* set the pin mode*/
-    pinMode(GPIO18, OUTPUT)//IN1
-    pinMode(GPIO23, OUTPUT)//IN2
-    pinMode(GPIO24, OUTPUT)//IN3
-    pinMode(GPIO25, OUTPUT)//IN4
+    pinMode(1, OUTPUT)//IN1, GPIO18
+    pinMode(4, OUTPUT)//IN2, GPIO23
+    pinMode(5, OUTPUT)//IN3, GPIO24
+    pinMode(6, OUTPUT)//IN4, GPIO25
 
     while(1){
         /*rotating 360° clockwise, a total of 2048 steps in one full revolution, namely, 512 cycles.

@@ -12,12 +12,12 @@
 #define SERVO_MAX_ANGLE 180
 
 /* signal pin of the servo*/
-#define servoPin = GPIO18   
+#define servoPin = 1   
 
 //Specific a certain rotation angle (0-180) for the servo
 void servoWrite(int pin, int angle){ 
     long time = 0;
-    time = angle / 1024/* map the desired angle to time*/
+    time = 0.5 + (angle/90)/* map the desired angle to time*/
     softPwmWrite(pin,time);   
 }
 

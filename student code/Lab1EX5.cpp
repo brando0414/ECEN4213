@@ -24,7 +24,7 @@
 using namespace std;
 
 /* signal pin of the servo*/
-#define servoPin = GPIO18   
+#define servoPin = 1   
 
 //Specific a certain rotation angle (0-180) for the servo
 void servoWrite(int pin, int angle){ 
@@ -51,7 +51,7 @@ int main(void)
     softPwmCreate(servoPin,  0, 200);
 
     /* Use wiringPiISR() to setup your interrupts. Refer to document WiringPi_ Interrupts.pdf. */
-
+    wiringPiISR(4, INT_EDGE_RISING)
 
 
 
