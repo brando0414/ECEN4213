@@ -25,7 +25,8 @@ float read_sonar();
 
 
 // variables
-float distance_previous_error, distance_error;
+float distance_previous_error = 0;
+float distance_error;
 float obj_value, measured_value; // potentionmeter reading, sonar reading
 int adc;
 float PID_p,  PID_d, PID_total, PID_i = 0;
@@ -80,19 +81,21 @@ void sigroutine(int signo){
 the speed of the fan so that the Ping-Pang ball can stay in the obj position*/
 void PID(float kp, float ki, float kd){
     /*read the objective position/distance of the ball*/
-    
+    float obj_value = read_potentiometer();
     /*read the measured position/distance of the ball*/
-
+    float measured_value = read_sonar();
     /*calculate the distance error between the obj and measured distance */
-
+    float distance_error = measured_value - obj_value;
+    float cumError += distance_error*time_inter_ms;
+    float rateError = (distance_error - distance_previous_error)/time_inter_ms;
     /*calculate the proportional, integral and derivative output */
-    PID_p = ;
-    PID_i = ;
-    PID_d = ;
+    PID_p = kp * Error;
+    PID_i = ki * cumError;
+    PID_d = kd * rateError;
     PID_total = PID_p + PID_d + PID_i; 
 
     /*assign distance_error to distance_previous_error*/
-
+    distance_previous_error = distance_error;
 
     /*use PID_total to control your fan*/
     softPemWrite(FAN, PID_total);
@@ -155,7 +158,7 @@ float read_sonar()
 can change the objective distance. you may reuse your code in Lab 1.*/
 float read_potentionmeter()
 {
-    
+
 }
 
 
