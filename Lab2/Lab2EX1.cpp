@@ -1,4 +1,4 @@
-
+//Group 12 Nathan Fant and Brandon Collings
 
 //Use g++ -std=c++11 -o Lab2EX1 Lab2EX1.cpp -lwiringPi
 
@@ -41,29 +41,29 @@ int main(){
 
 		// 1. defind a varable to get the current time t1. Refer to "High_Resolution_Clock_Reference.pdf" for more information
 		high_resolution_clock::time_point t1 =high_resolution_clock::now();
-		int pulse_width;
+		float pulse_width;
 		while(digitalRead(SIG))
 		{
 			// 2. defind a varable to get the current time t2.
 			high_resolution_clock::time_point t2 =high_resolution_clock::now();
 			// 3. calculate the time duration: t2 - t1
-			pulse_width = chrono::duration_cast<chrono::microseconds>(t2 – t1).count();
+			pulse_width = duration_cast<microseconds>(t2 - t1).count();
 			// 4. if the duration is larger than the Pulse Maxium 18.5ms, break the loop.
-			if (pulse_width >= 18.5) break;
+			if (pulse_width >= 18500 && pulse_width <= 115) break;
 		}
 
 
 
 		/*Calculate the distance by using the time duration that you just obtained.*/ //Speed of sound is 340m/s
-		float distance = 3.4 *  pulse_width;
+		float distance = 0.034 / 2 * pulse_width;
 
 
 		/*Print the distance.*/
-		printf("Distance: %d", distance)
+		printf("Distance: %lf\n", distance);
 
 
 		/*Delay before next measurement. The actual delay may be a little longer than what is shown is the datasheet.*/
-		usleep(200);
+		usleep(2000);
 
         }
 }
