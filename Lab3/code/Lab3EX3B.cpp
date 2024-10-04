@@ -36,13 +36,17 @@ int main(int argc, char const *argv[]){
 	while(true){
 
 		/*Sample the events from the joystick*/
-
-		/*Convert the event to a useable data type so it can be sent*/
-
-		/*Print the data stream to the terminal*/
-
-		/*Send the data to the server*/
-
+        char eventRaised = (char)joystick.sample(&event);
+        char isButton = (char)event.isButton();
+        char isJoystick = (char)event.isJoystick();
+        char inputNumber = (char)event.number;
+        char inputValue = (char)event.value;
+        /*Convert the event to a useable data type so it can be sent*/
+        char toSend[5] = {eventRaised, isButton, isJoystick, inputNumber, inputValue};
+        /*Print the data stream to the terminal*/
+        cout << "input event: " << eventRaised << ", is button: " << isButton << ", is joystick: " << isJoystick, ", input number: " inputNumber << ", input value: " << inputValue;
+        /*Send the data to the server*/
+        send(sock, toSend, strlen(toSend), 0);
 		if(/**/) {
 		/*Closes out of all connections cleanly*/
 

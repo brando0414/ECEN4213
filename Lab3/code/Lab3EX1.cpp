@@ -4,7 +4,9 @@
 #include <unistd.h>
 #include <wiringSerial.h>
 #include <wiringPi.h>
+#include <chrono>
 using namespace std;
+using namespace std::chrono;
 
 void movement(int, int);
 int kobuki;
@@ -25,10 +27,41 @@ int main(){
 
 
 	/*Rotate the Kobuki 90 degrees*/
+	
+	high_resolution_clock::time_point t1 = high_resolution_clock::now();
+	high_resolution_clock::time_point t2 = high_resolution_clock::now();
+	double timeElap1 = duration_cast<microseconds>(t2 - t1).count();
+	while(timeElap1 < 1000000){
+		movement(68, -1);
+		t2 = high_resolution_clock::now();
+		timeElap1 = duration_cast<microseconds>(t2 - t1).count();
+	}
+	movement(0,0);
+	usleep(5000000);
 
 	/*Move along the vertical side*/
 
+	high_resolution_clock::time_point t3 = high_resolution_clock::now();
+	high_resolution_clock::time_point t4 = high_resolution_clock::now();
+	double timeElap2 = duration_cast<microseconds>(t4 - t3).count();
+	while(timeElap2 < 12000000){
+		movement(50, 0);
+		t4 = high_resolution_clock::now();
+		timeElap2 = duration_cast<microseconds>(t4 - t3).count();
+	}
+	movement(0,0);
+	usleep(5000000);
+
 	/*Move along quarter circle*/
+	
+	high_resolution_clock::time_point t5 = high_resolution_clock::now();
+	high_resolution_clock::time_point t6 = high_resolution_clock::now();
+	double timeElap3 = duration_cast<microseconds>(t6 - t5).count();
+	while(timeElap3 < 13500000){ //12770000
+		movement(61, -550);
+		t6 = high_resolution_clock::now();
+		timeElap3 = duration_cast<microseconds>(t6 - t5).count();
+	}
 
 
 
@@ -60,10 +93,9 @@ void movement(int sp, int r){
 		checksum ^= packet[i];
 
 	/*Send the data (Byte 0 - Byte 8 and checksum) to Kobuki using serialPutchar (kobuki, );*/
-	serialPutChar(kobuki, packet);
 	for (int i = 0; i < 9; i++)
 	{
-		serialPutChar(kobuki, packet[i]);
+		serialPutchar(kobuki, packet[i]);
 	}
 	/*Pause the script so the data send rate is the
 	same as the Kobuki data receive rate*/

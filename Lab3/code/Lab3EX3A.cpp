@@ -19,6 +19,8 @@ void createSocket();
 void readData();
 
 int kobuki, new_socket;
+int sock = 0;
+char buffer[1024] = {0};
 
 /*Create char buffer to store transmitted data*/
 
@@ -39,23 +41,32 @@ int main(){
 
 void movement(int sp, int r){
 	//Create the byte stream packet with the following format:
-	/*Byte 0: Kobuki Header 0*/
-	/*Byte 1: Kobuki Header 1*/
-	/*Byte 2: Length of Payload*/
-	/*Byte 3: Payload Header*/
-	/*Byte 4: Payload Data: Length*/
-	/*Byte 5: Payload Data: Speed(mm/s)*/
-	/*Byte 6: Payload Data: Speed(mm/s)*/
-	/*Byte 7: Payload Data: Radius(mm)*/
-	/*Byte 8: Payload Data: Radius(mm)*/
-	/*Byte 9: Checksum*/
+	unsigned char b_0 = 0xaa; /*Byte 0: Kobuki Header 0*/
+	unsigned char b_1 = 0x55; /*Byte 1: Kobuki Header 1*/
+	unsigned char b_2 = 0x0a; /*Byte 2: Length of Payload*/
+	unsigned char b_3 = 0x01; /*Byte 3: Sub-Payload Header*/
+	unsigned char b_4 = 0x04; /*Byte 4: Length of Sub-Payload*/
 
-	/*Send the data to the Kobuki over a serial stream*/
+	unsigned char b_5 = sp & 0xff;	//Byte 5: Payload Data: Speed(mm/s)
+	unsigned char b_6 = (sp >> 8) & 0xff; //Byte 6: Payload Data: Speed(mm/s)
+	unsigned char b_7 = r & 0xff;	//Byte 7: Payload Data: Radius(mm)
+	unsigned char b_8 = (r >> 8) & 0xff;	//Byte 8: Payload Data: Radius(mm)
+	unsigned char checksum = 0;		//Byte 9: Checksum
+	
+	//Checksum all of the data
+	char packet[] = {b_0,b_1,b_2,b_3,b_4,b_5,b_6,b_7,b_8};
+	for (unsigned int i = 2; i < 9; i++)
+		checksum ^= packet[i];
 
-	/*Checksum all the data and send that as well*/
-
+	/*Send the data (Byte 0 - Byte 8 and checksum) to Kobuki using serialPutchar (kobuki, );*/
+	for (int i = 0; i < 9; i++)
+	{
+		serialPutchar(kobuki, packet[i]);
+	}
 	/*Pause the script so the data send rate is the
-	same as the Kobuki receive rate*/
+	same as the Kobuki data receive rate*/
+
+	usleep(20000);
 }
 
 //Creates the connection between the client and
@@ -98,15 +109,14 @@ void createSocket(){
 
 void readData(){
 	/*Read the incoming data stream from the controller*/
-
-
-	
-	
-	/*Print the data to the terminal*/
-
-
-	
-
+    int valread = read(sock, buffer, bufferLength);
+    int eventRaised = (int)buffer[0];
+    int isButton = (int)buffer[1];
+    int isJoystick = (int)buffer[2];
+    int inputNumber = (int)buffer[3];
+    int inputValue = (int)buffer[4];
+    /*Print the data to the terminal*/
+    cout << "input event: " << eventRaised << ", is button: " << isButton << ", is joystick: " << isJoystick, ", input number: " inputNumber << ", input value: " << inputValue;
 	/*Use the received data to control the Kobuki*/
 
 	
