@@ -1,0 +1,23 @@
+Key Mapping of Joystick buttons and axis
+Based on Logitech F310 gaming controller
+
+Axis 0: Left X
+Axis 1: Left Y
+Axis 2: Left Trigger
+Axis 3: Right X
+Axis 4: Right Y
+Axis 5: Right Trigger
+Axis 6: D-Pad Left / -32767 and D-Pad Right / 32767
+Axis 7: D-Pad Up   / -32767 and D-Pad Down  / 32767
+
+Button  0: A
+Button  1: B
+Button  2: X
+Button  3: Y
+Button  4: Left  Bumper
+Button  5: Right Bumper
+Button  6: Back
+Button  7: Start
+Button  8: Logitech Button
+Button  9: Left  Axial Button
+Button 10: Right Axial Button
