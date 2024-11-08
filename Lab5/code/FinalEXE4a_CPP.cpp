@@ -19,7 +19,9 @@
 #include <ctime>
 #include <thread>
 
+
 using namespace std;
+using namespace std::chrono;
 #define  PORT 8000
 #define  IP "127.0.0.1"
 
@@ -35,6 +37,7 @@ unsigned int drop;
 unsigned int cliff;
 unsigned int button;
 char cmd = 's';
+int sp = 0, r = 0;
 
 void readData();
 
@@ -42,6 +45,7 @@ void readData();
 
 void read_socket(){
 	char buffer[100];
+
 	while(1){
 		read(sock , buffer, 50);
 		/*Print the data to the terminal*/
@@ -49,10 +53,55 @@ void read_socket(){
 		printf("received: %c\n",cmd);
 
 		// use cmd to control the robot movement
+		switch(cmd)
+		{
+			case('u'):
+				sp = 100;
+				r = 0;
+				break;
+			case('d'):
+				sp = -100;
+				r = 0;
+				break;
+			case('l'):
+			{
+				high_resolution_clock::time_point t1 = high_resolution_clock::now();
+				high_resolution_clock::time_point t2 = high_resolution_clock::now();
+				double timeElap1 = duration_cast<microseconds>(t2 - t1).count();
+				while(timeElap1 < 3850000){
+					movement(68, -1);
+					t2 = high_resolution_clock::now();
+					timeElap1 = duration_cast<microseconds>(t2 - t1).count();
+				}
+				sp = 0;
+				r = 0;
+				break;
+			}
+			case('r'):
+			{
+				high_resolution_clock::time_point t3 = high_resolution_clock::now();
+				high_resolution_clock::time_point t4 = high_resolution_clock::now();
+				double timeElap2 = duration_cast<microseconds>(t4 - t3).count();
+				while(timeElap2 < 3850000){
+					movement(68, 1);
+					t4 = high_resolution_clock::now();
+					timeElap2 = duration_cast<microseconds>(t4 - t3).count();
+				}
+				sp = 0; 
+				r = 0;
+				break;
+			}
+			case('s'):
+				sp = 0;
+				r = 0;
+				break;
+		}
+		movement(sp,r);
 
-		
 		//clean the buffer
-		
+		for(int i = 0; i < 100; i++){
+			buffer[i] = 0;
+		}
 	}
 	
 }

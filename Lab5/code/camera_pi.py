@@ -69,16 +69,17 @@ class Camera(object):
 
 camera = Camera()
 #todo: setup the UDP socket.
-
+server_address = ('127.0.0.2', 8001)
+client = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 def get_f():
     global camera,connection
     image = camera.get_frame()
-    print(len(image))
+    #print(len(image))
     try:
-        # send image to the server
+        client.sendto(image,server_address)
         pass
     except:
-        print("something happened")
+        print("I shit myself :(")
 
 def read_send_image():
     while(1):
