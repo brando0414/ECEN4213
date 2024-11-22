@@ -61,7 +61,7 @@ void read_socket(){
 				sp = -100;
 				r = 0;
 				break;
-			case('l'):
+			case('r'):
 			{
 				high_resolution_clock::time_point t1 = high_resolution_clock::now();
 				high_resolution_clock::time_point t2 = high_resolution_clock::now();
@@ -75,7 +75,7 @@ void read_socket(){
 				r = 0;
 				break;
 			}
-			case('r'):
+			case('l'):
 			{
 				high_resolution_clock::time_point t3 = high_resolution_clock::now();
 				high_resolution_clock::time_point t4 = high_resolution_clock::now();

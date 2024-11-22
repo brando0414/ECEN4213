@@ -20,6 +20,7 @@
 #include <thread>
 
 using namespace std;
+using namespace std::chrono;
 #define  PORT 8000
 #define  IP "127.0.0.1"
 
@@ -34,7 +35,8 @@ unsigned int bumper;
 unsigned int drop;
 unsigned int cliff;
 unsigned int button;
-char cmd = 's';
+int sp = 0, r = 0;
+
 
 void readData();
 
@@ -46,20 +48,18 @@ void read_socket(){
 	char buffer[100];
 	while(1){
 		read(sock , buffer, 50);
-		/*Print the data to the terminal*/
-		cmd = buffer[0];
-		printf("received: %c\n",cmd);
+		cout << "Buffer " << buffer << endl;
+		r = joystick_x(buffer);
+		cout << "r " << r << endl;
+		sp = joystick_y(buffer);
+		cout << "sp " << sp << endl;
+		movement(sp,r);
 
-		// parse xpos and ypos from the buffer
-
-
-		// use xpos and ypos to control the robot movement
-
-		
 		//clean the buffer
-		
+		for(int i = 0; i < 100; i++){
+			buffer[i] = 0;
+		}
 	}
-	
 }
 
 int main(){
@@ -73,16 +73,23 @@ int main(){
 	while(serialDataAvail(kobuki) != -1)
 	{
 		// Read the sensor data.
-
+		readData();
 
 		// Construct an string data like 'b0c0d0', you can use "sprintf" function. You can also define your own data protocal.
-
+		sprintf(buffer, "b%dc%dd%d", bumper, cliff, drop);
 
 		// Send the sensor data through the socket
+		if(send(sock, buffer, sizeof(buffer), 0) != -1){
+			//cout << "Send Successful" << endl;
+		}
+		else{
+			cout << "Send Failed" << endl;
+		}
 
 		// Clear the buffer
-
-		// You can refer to the code in previous labs. 
+		for(int i = 0; i < 10; i++){
+			buffer[i] = 0;
+		}
 	}
 	serialClose(kobuki);
 	

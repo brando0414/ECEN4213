@@ -31,7 +31,7 @@ connection, address = sock.accept()
 #Find the IP Address of your device
 #Use the 'ifconfig' terminal command, the address should be in
 #the format  "XX.XXX.XXX.XXX"
-IP_Address = '10.227.33.73'
+IP_Address = '10.227.108.133'
 PORT = 8080
 #Connect the *.html page to the server and run as the default page
 
@@ -42,18 +42,23 @@ def index():
     if request.headers.get('accept') == 'text/event-stream':
         def events():
             for i, c in enumerate(itertools.cycle('\|/-')):
-                yield "data: %s\n\n" % ("b0c0d0")
+                yield "data: %s\n\n" % (info)
                 
         return Response(events(), content_type='text/event-stream')
     return render_template('FinalB2.html')
 
 
-def launch_socket_server(connection, address ):
+def launch_socket_server(connection, address):
     global info, frame
     print('Listening...')
     a='b0c0d0'
     while True:        
-        info = connection.recv(6).decode("utf-8")
+        info = connection.recv(6)#.decode('utf-8')
+        #print(info)
+        try:
+            info = info.decode('utf-8')
+        except Exception:
+            print("failed decode")
         if info != a and len(info)>0:
             a = info
 

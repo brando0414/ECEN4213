@@ -12,7 +12,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-#include<cstring>
+#include <cstring>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <sys/types.h>
@@ -35,6 +35,7 @@ unsigned int drop;
 unsigned int cliff;
 unsigned int button;
 char cmd = 's';
+int sp = 0, r = 0;
 
 void readData();
 int speed(string); // this function can parse the received buffer and return the speed value
@@ -49,13 +50,15 @@ void read_socket(){
 		cmd = buffer[0];
 		printf("received: %c\n",cmd);
 		// parse sensor data from the buffer
-
-
+		r = radius(buffer);
+		sp = speed(buffer);
 		// use the sensor data to control the robot movement
-
+		movement(sp,r);
 		
 		//clean the buffer
-
+		for(int i = 0; i < 100; i++){
+			buffer[i] = 0;
+		}
 	}
 	
 }
@@ -71,16 +74,23 @@ int main(){
 	while(serialDataAvail(kobuki) != -1)
 	{
 		// Read the sensor data.
-
+		readData();
 
 		// Construct an string data like 'b0c0d0', you can use "sprintf" function. You can also define your own data protocal.
-
+		sprintf(buffer, "b%dc%dd%d", bumper, cliff, drop);
 
 		// Send the sensor data through the socket
+		if(send(sock, buffer, sizeof(buffer), 0) != -1){
+			//cout << "Send Successful" << endl;
+		}
+		else{
+			cout << "Send Failed" << endl;
+		}
 
 		// Clear the buffer
-
-		// You can refer to the code in previous labs. 
+		for(int i = 0; i < 10; i++){
+			buffer[i] = 0;
+		}
 	}
 	serialClose(kobuki);
 	

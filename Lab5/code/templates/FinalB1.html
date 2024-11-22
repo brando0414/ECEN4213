@@ -9,7 +9,7 @@
     <script src="../static/parse_data.js"></script>
 
 
-    <script type=text/javascript> $(function() { $("#upbutton").click(function (event) { $.getJSON('/UpFunction', { },
+    <script type=text/javascript> $(function() { $("joy1").click(function (event) { $.getJSON('/JoystickFunction', { },
     function(data) { }); return false; }); }); </script> 
 
     <!-- add four more functions for the left, right, down and stop buttons -->
@@ -34,16 +34,21 @@
 
       <!-- sensor status display module -->
       <div>
-        <input style="font-size:40;height:150; width:300;" type = "button" id = "disbutton" value = "Bumper" /> 
-        <input style="font-size:40;height:150; width:300;" type = "button" id = "disbutton" value = "WheelDrop" /> 
-        <input style="font-size:40;height:150; width:300;" type = "button" id = "disbutton" value = "Cliff" />
+        <!-- module 2 sensor tag: Bumper, wheelDrop, Cilff -->	
+        <!-- sensor tag: Bumper, wheelDrop, Cilff -->
+        <input style="font-size:40;height:150; width:300;" type = "button" id = "bumper_button" value = "Bumper" />
+        <input style="font-size:40;height:150; width:300;" type = "button" id = "wheel_drop_button" value = "Wheel Drop" />
+        <input style="font-size:40;height:150; width:300;" type = "button" id = "cliff_button" value = "Cliff" />        
+        <!-- add two more buttons here -->
+  
       </div>
-
-
+  
       <div>
-        <input style="font-size:40;height:150; width:300;" type = "button" id = "but1" value = "OFF" />
-        <input style="font-size:40;height:150; width:300;" type = "button" id = "but2" value = "OFF" />
-        <input style="font-size:40;height:150; width:300;" type = "button" id = "but3" value = "OFF" />
+        <!-- module 2 sensor status: on, off,… -->
+        <input style="font-size:40;height:150; width:300;" type = "button" id = "bumper_status_button" value = "OFF" />
+        <input style="font-size:40;height:150; width:300;" type = "button" id = "wheel_drop_status_button" value = "OFF" />
+        <input style="font-size:40;height:150; width:300;" type = "button" id = "cliff_status_button" value = "OFF" />
+        <!-- add two more buttons here -->
       </div>
 
       <hr>
@@ -64,14 +69,15 @@
               var xpos = joy.GetX();
 
               // todo: get the y axis position ypos
-    
+              var ypos = joy.GetY();
+
               const xhttp = new XMLHttpRequest();
     
               xhttp.open('POST', "/joydata",false);
               xhttp.setRequestHeader("Content-Type", "application/json");
 
-              // todo: format xpos and ypos into a JSON message with the format: {"x": xpos, "y": ypos}
-              const json = {    };
+              // todo: format xpos and ypos into a JSON message with the format: {"x": xpos, "y": ypos} {"x":num,"y":num}
+              const json = {"x": xpos, "y": ypos};
 
               xhttp.send(JSON.stringify(json));
           }
