@@ -1,0 +1,53 @@
+<html>
+	<head>
+		<!-- define your title  -->
+
+		<script>
+			function turn_on_light()
+			{
+				// find out the id where you can to change the image
+				element=document.getElementById('myimage')
+
+				// select an image to display
+				element.src="../static/pic_bulbon.png";
+			}
+
+			function turn_off_light()
+			{
+				// find out the id where you can to change the image
+				element=document.getElementById('myimage');
+
+				// select an image to display
+				element.src="../static/pic_bulboff.png";
+			}
+
+			
+		</script>
+
+
+
+
+	</head>
+
+
+	<body>
+		<!-- the description sentence  -->
+		<h1 align = "center">A Light Bulb</h1>
+		<!-- display the image -->
+
+
+		<!-- to adjust the size of the image, you can modify  width="300px" height="400px" -->
+		<center><img id='myimage' alt='write something' width="100px" height="180px" src="../static/pic_bulbon.png"></center>
+		
+		<!-- to modify the position and size of the buttons, you can modify  style="position:relative;top:5%;left:30%" 
+		and style="font-size:30;height:100px; width:200px;" -->
+		<div  align = "center" style="position:relative;top:5%;left:0%">
+	      <input style="font-size:30;height:100px; width:200px;" type = "button" onclick="turn_on_light()" id = "turn_on" value = "On" />
+	      <input style="font-size:30;height:100px; width:200px;" type = "button" onclick="turn_off_light()" id = "turn_off" value = "Off" />
+    	</div>
+
+
+
+
+	</body>
+</html>

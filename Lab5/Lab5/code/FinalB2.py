@@ -31,7 +31,7 @@ connection, address = sock.accept()
 #Find the IP Address of your device
 #Use the 'ifconfig' terminal command, the address should be in
 #the format  "XX.XXX.XXX.XXX"
-IP_Address = '10.227.108.133'
+IP_Address = '10.227.108.249'
 PORT = 8080
 #Connect the *.html page to the server and run as the default page
 
@@ -45,7 +45,7 @@ def index():
                 yield "data: %s\n\n" % (info)
                 
         return Response(events(), content_type='text/event-stream')
-    return render_template('FinalB1.html')
+    return render_template('FinalB2.html')
 
 
 def launch_socket_server(connection, address):
@@ -66,14 +66,11 @@ def launch_socket_server(connection, address):
 
 def gen(camera):
     max_len = 65507
-    frame = ''
     while True:
-        # receive image to the client: frame = .....
-        frame,_ = sock_1.recvfrom(max_len)
+        
+        # print(len(frame))
         yield (b'--frame\r\n'
             b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
-
 @app.route('/video_feed')
 def video_feed():
     return Response(gen(Camera()),mimetype='multipart/x-mixed-replace; boundary=frame')
@@ -81,17 +78,16 @@ def video_feed():
 
 
 
-@app.route('/joydata',methods = ['POST', 'GET'])
-def JoystickFunction():
+@app.route('/phonedata',methods = ['POST', 'GET'])
+def PhoneFunction():
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
         json = request.get_json()
-        print(str(json))
+        print("Data ", json)
         connection.send(str(json).encode('utf-8'))
         return "Content supported\n"
     else:
         return "Content not supported\n"
-
 
 
 #Start the server
@@ -103,4 +99,4 @@ if __name__ == "__main__":
     t.start()
 
 
-    app.run(debug=True, host=IP_Address, port=PORT, use_reloader=False)
+    app.run(debug=True, host=IP_Address, port=PORT, use_reloader=False,ssl_context='adhoc')

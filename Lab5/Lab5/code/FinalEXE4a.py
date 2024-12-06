@@ -8,13 +8,11 @@ import itertools
 # import time
 from camera_pi import Camera
 import socket
-from threading import Thread
-# import sqlite3
-
-
 
 
 app = Flask(__name__)
+
+
 server_address_1 =  ('127.0.0.2', 8001)
 sock_1 = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock_1.bind(server_address_1)
@@ -31,37 +29,20 @@ connection, address = sock.accept()
 #Find the IP Address of your device
 #Use the 'ifconfig' terminal command, the address should be in
 #the format  "XX.XXX.XXX.XXX"
-IP_Address = '10.227.108.133'
+IP_Address = '10.227.108.249'
 PORT = 8080
 #Connect the *.html page to the server and run as the default page
 
-info = "2"
 
 @app.route('/')
 def index():
     if request.headers.get('accept') == 'text/event-stream':
         def events():
             for i, c in enumerate(itertools.cycle('\|/-')):
-                yield "data: %s\n\n" % (info)
-                
+            # info = connection.recv(6).decode("utf-8")   
+                yield "data: %s\n\n" % ('b0c0d0')
         return Response(events(), content_type='text/event-stream')
-    return render_template('FinalB1.html')
-
-
-def launch_socket_server(connection, address):
-    global info, frame
-    print('Listening...')
-    a='b0c0d0'
-    while True:        
-        info = connection.recv(6)#.decode('utf-8')
-        #print(info)
-        try:
-            info = info.decode('utf-8')
-        except Exception:
-            print("failed decode")
-        if info != a and len(info)>0:
-            a = info
-
+    return render_template('FinalEXE3.html')
 
 
 def gen(camera):
@@ -80,27 +61,42 @@ def video_feed():
 
 
 
+@app.route('/UpFunction')
+def UpFunction():
+    print('In UpFunction')
+    cmd = 'u'
+    connection.send(cmd.encode('utf-8'))  
+    return "None"
 
-@app.route('/joydata',methods = ['POST', 'GET'])
-def JoystickFunction():
-    content_type = request.headers.get('Content-Type')
-    if (content_type == 'application/json'):
-        json = request.get_json()
-        print(str(json))
-        connection.send(str(json).encode('utf-8'))
-        return "Content supported\n"
-    else:
-        return "Content not supported\n"
+# define four funtions to handle the left, right, down and stop buttons
+@app.route('/LeftFunction')
+def LeftFunction():
+    print('In LeftFunction')
+    cmd = 'l'
+    connection.send(cmd.encode('utf-8'))  
+    return "None"
 
+@app.route('/RightFunction')
+def RightFunction():
+    print('In RightFunction')
+    cmd = 'r'
+    connection.send(cmd.encode('utf-8'))  
+    return "None"
+    
+@app.route('/DownFunction')
+def DownFunction():
+    print('In DownFunction')
+    cmd = 'd'
+    connection.send(cmd.encode('utf-8'))  
+    return "None"
 
+@app.route('/StopFunction')
+def StopFunction():
+    print('In StopFunction')
+    cmd = 's'
+    connection.send(cmd.encode('utf-8'))  
+    return "None"
 
 #Start the server
 if __name__ == "__main__":
-
-
-    t = Thread(target=launch_socket_server,args=(connection,address))
-    t.daemon = True
-    t.start()
-
-
     app.run(debug=True, host=IP_Address, port=PORT, use_reloader=False)
